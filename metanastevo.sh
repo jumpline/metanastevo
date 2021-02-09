@@ -6,9 +6,8 @@
 ## @Email:  admins@jumpline.som
 ## @Filename: metanastevo.sh
 ## @Last modified by:   schaffins
-## @Last modified time: 2021-02-08T20:33:48-05:00
+## @Last modified time: 2021-02-08T20:50:02-05:00
 #############################################
-
 
 # -----------------------------------------------------------------------------
 # Setting basic variables and functions to get started. This includes a list
