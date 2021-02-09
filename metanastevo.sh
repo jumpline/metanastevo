@@ -6,7 +6,7 @@
 ## @Email:  admins@jumpline.com
 ## @Project: Metanastévo
 ## @Last modified by:   schaffins
-## @Last modified time: 2021-02-08T19:24:25-05:00
+## @Last modified time: 2021-02-08T20:08:50-05:00
 #############################################
 
 
@@ -47,8 +47,7 @@ exec 2> /var/log/metanastevo_logs/stderr.log 1> >(tee -i /var/log/metanastevo_lo
 # server once packaged.
 # -----------------------------------------------------------------------------
 if [[ ! -f /usr/local/cpanel/cpanel ]]; then
-  wget -q --no-check-certificate --no-cache --no-cookie https://raw.githubusercontent.com/jumpline/metanastevo/master/met_pkg.sh -O /root/met_pkg.sh
-  chmod 755 /root/met_pkg.sh
+  chmod 755 $(dirname "$0")/met_pkg.sh
   while :; do
     echo
     echo -e "\e[93m -------------------------------------------------------------------------------- \e[0m"
@@ -77,8 +76,7 @@ if [[ ! -f /usr/local/cpanel/cpanel ]]; then
     fi
   done
 elif [[ -f /usr/local/cpanel/cpanel ]]; then
-  wget -q --no-check-certificate --no-cache --no-cookie https://raw.githubusercontent.com/jumpline/metanastevo/master/met_rest.sh -O /root/met_rest.sh
-  chmod 755 /root/met_rest.sh
+  chmod 755 $(dirname "$0")/met_rest.sh
 else
   echo "Cant Decide if this is a Package or Restore. STOP!"
   echo $(dye)
@@ -104,7 +102,7 @@ if [[ ! -f /usr/local/cpanel/cpanel ]] ; then
     echo -e "\e[33m\e[1m Making $i root directory... \e[0m";sleep 1; echo
     eval mkdir -p ~"$i/root/migration_scripts"
     echo -e "\e[33m\e[1m Copying script to $i root directory... \e[0m";sleep 1; echo
-    eval cp -av /root/met_pkg.sh ~"$i/root/migration_scripts/"
+    eval cp -av $(dirname "$0")/met_pkg.sh ~"$i/root/migration_scripts/"
     echo -e "\e[33m\e[1m Chowning root directory to $i ownership... \e[0m";sleep 1; echo
     eval chown $i: -R ~"$i/root/migration_scripts/"
     echo -e "\e[33m\e[1m Running met_pkg.sh inside of $i VDS... \e[0m";sleep 1;
@@ -146,7 +144,7 @@ elif [[ -f /usr/local/cpanel/cpanel ]]; then
     echo "$cpname" "$rand0pass" >> /var/log/mig_user_pass
     echo -e "\e[33m\e[1m Restoring account $i \e[0m";sleep 1; echo
     eval cd /root/
-    eval ./met_rest.sh "$i" "$cpname" "$rand0pass"
+    eval $(dirname "$0")/met_rest.sh "$i" "$cpname" "$rand0pass"
     sleep 5;
     echo;
   done
@@ -161,7 +159,7 @@ else
   echo "WHAT IS THIS SERVER?!"
 fi
 
-rm -f /root/pkhro_*
+rm -f /root/met_*
 
 echo -e "\e[93m -------------------------------------------------------------------------------- \e[0m"
 echo -e "\e[93m ############################## \e[91m\e[1mMigration Complete!\e[0m\e[93m ################################## \e[0m"
