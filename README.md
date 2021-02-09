@@ -52,11 +52,9 @@ This metanastevo.sh script can be ran on the VDS Master for packaging the accoun
 ## Usage
 
 This is very basic. 1 script does all the work.
-
-
 1. Login to the VDS Master server (not as a client), download this file:
 ```
-    wget --no-check-certificate https://raw.githubusercontent.com/jumpline/metanastevo/master/metanastevo.sh; chmod 755 metanastevo.sh
+    wget --no-check-certificate https://raw.githubusercontent.com/jumpline/metanastevo/main/metanastevo.sh; chmod 755 metanastevo.sh
 ```
 2. To Package the account run the following command. It will take 1 or more usernames:
 ```
@@ -66,7 +64,7 @@ This is very basic. 1 script does all the work.
 
 4. Login to the cPanel server, and repeat steps 1 and 2.
 ```
-    wget --no-check-certificate https://raw.githubusercontent.com/jumpline/metanastevo/master/metanastevo.sh; chmod 755 metanastevo.sh
+    wget --no-check-certificate https://raw.githubusercontent.com/jumpline/metanastevo/main/metanastevo.sh; chmod 755 metanastevo.sh
     ./metanastevo.sh user1 user2 user3
 ```
 
