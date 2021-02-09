@@ -1,7 +1,7 @@
 <h1 align="center">Welcome to Metanastevo (VDS2CP) :mage: </h1>
 <p>
-  <img alt="Version" src="https://img.shields.io/badge/version-1.5-blue.svg?cacheSeconds=2592000" />
-  <img src="https://img.shields.io/badge/bash-%3E%3D3.00.15-blue.svg" />
+  <img alt="Version" src="https://img.shields.io/badge/version-2.0-blue.svg?cacheSeconds=2592000" />
+  <img src="https://img.shields.io/badge/bash-%3E%3D3.00.20-blue.svg" />
   <a href="https://github.com/jumpline/metanastevo#readme" target="_blank">
     <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" />
   </a>
