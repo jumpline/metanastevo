@@ -6,7 +6,7 @@
 ## @Email:  admins@jumpline.som
 ## @Filename: met_rest.sh
 ## @Last modified by:   schaffins
-## @Last modified time: 2021-02-08T20:34:19-05:00
+## @Last modified time: 2021-02-08T21:29:50-05:00
 #############################################
 
 # -----------------------------------------------------------------------------
@@ -381,4 +381,5 @@ echo -e "\e[1m\e[44m Restoration of $cpUSER account is complete. \e[0m";sleep 1;
 echo
 
 echo -e "\e[1m\e[41m Exiting. Done. \e[0m";echo
+
 exit 0;
