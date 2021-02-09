@@ -3,11 +3,12 @@
 #############################################
 ## @Author: Jumpline <schaffins>
 ## @Date:   2021-02-08T18:58:20-05:00
-## @Email:  admins@jumpline.com
-## @Project: Metanastévo
+## @Email:  admins@jumpline.som
+## @Filename: met_pkg.sh
 ## @Last modified by:   schaffins
-## @Last modified time: 2021-02-08T19:24:04-05:00
+## @Last modified time: 2021-02-08T20:34:36-05:00
 #############################################
+
 
 # -----------------------------------------------------------------------------
 # Using this line to set some basic vairables.
