@@ -6,7 +6,7 @@
 ## @Email:  admins@jumpline.som
 ## @Filename: metanastevo.sh
 ## @Last modified by:   schaffins
-## @Last modified time: 2021-02-08T21:29:43-05:00
+## @Last modified time: 2021-02-08T23:04:19-05:00
 #############################################
 
 # -----------------------------------------------------------------------------
@@ -57,6 +57,7 @@ if [[ ! -f /usr/local/cpanel/cpanel ]]; then
     read shouldrsync
     echo
     if [ "$shouldrsync" = "Y" ] || [ "$shouldrsync" = "Yes" ] || [ "$shouldrsync" = "y" ] || [ "$shouldrsync" = "yes" ]; then
+      set migquest="yes"
       echo -e "\e[91m\e[1mType the full hostname of the destination/cPanel server, followed by [ENTER]:\e[0m";
       read fulldesthost
       echo
@@ -67,6 +68,7 @@ if [[ ! -f /usr/local/cpanel/cpanel ]]; then
       echo
       break
     elif [ "$shouldrsync" = "N" ] || [ "$shouldrsync" = "No" ] || [ "$shouldrsync" = "n" ] || [ "$shouldrsync" = "No" ]; then
+      set migquest="no"
       echo "No problemo, no rsyncing at the end."; echo;
       shouldrsync="11"
       break
