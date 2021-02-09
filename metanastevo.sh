@@ -6,7 +6,7 @@
 ## @Email:  admins@jumpline.som
 ## @Filename: metanastevo.sh
 ## @Last modified by:   schaffins
-## @Last modified time: 2021-02-08T23:13:40-05:00
+## @Last modified time: 2021-02-09T00:12:36-05:00
 #############################################
 
 # -----------------------------------------------------------------------------
@@ -57,7 +57,6 @@ if [[ ! -f /usr/local/cpanel/cpanel ]]; then
     read shouldrsync
     echo
     if [ "$shouldrsync" = "Y" ] || [ "$shouldrsync" = "Yes" ] || [ "$shouldrsync" = "y" ] || [ "$shouldrsync" = "yes" ]; then
-      set migquest="yes"
       echo -e "\e[91m\e[1mType the full hostname of the destination/cPanel server, followed by [ENTER]:\e[0m";
       read fulldesthost
       echo
@@ -68,7 +67,6 @@ if [[ ! -f /usr/local/cpanel/cpanel ]]; then
       echo
       break
     elif [ "$shouldrsync" = "N" ] || [ "$shouldrsync" = "No" ] || [ "$shouldrsync" = "n" ] || [ "$shouldrsync" = "No" ]; then
-      set migquest="no"
       echo "No problemo, no rsyncing at the end."; echo;
       shouldrsync="11"
       break
@@ -102,6 +100,7 @@ if [[ ! -f /usr/local/cpanel/cpanel ]] ; then
   do
     echo -e "\e[33m\e[1m Making $i root directory... \e[0m";sleep 1; echo
     eval mkdir -p ~"$i/root/migration_scripts"
+    eval chown "$i\:" ~"$i/root/"
     echo -e "\e[33m\e[1m Copying script to $i root directory... \e[0m";sleep 1; echo
     eval cp -av $(dirname "$0")/met_pkg.sh ~"$i/root/migration_scripts/"
     echo -e "\e[33m\e[1m Chowning root directory to $i ownership... \e[0m";sleep 1; echo
@@ -119,21 +118,35 @@ if [[ ! -f /usr/local/cpanel/cpanel ]] ; then
       ##end ticking
 
       eval scp -P 1022 -i "$fullkeythost" ~"$i/root/metanastevo_restore_$i.tar" root@"$fulldesthost":/root/
+#      eval scp -P 1022 ~"$i/root/metanastevo_restore_$i.tar" "$fulldesthost":/root/
 
       kill "$bgid"; echo
 
       if [[ $? -eq 0 ]]; then
         echo
         echo -e "\e[33m\e[1m Rsyncing $i to vmcp14 was success! \e[0m";
-      else
+      elif [[ $? -ne 0] ]]; then
+        #statements
         echo -e "\e[1m\e[41m Rsync Failure!! \e[0m";echo
       fi
-    fi
+    elif [[ "$shouldrsync" -eq "11" ]]; then
 
-    if [[ "$migquest" -eq "yes" ]];then
-      eval rm -rf ~"$i/root/migration_scripts"
+      ##ticking
+      while :; do
+        for s in / - \\ \|; do echo -ne "\r $s";sleep 1;done
+      done &
+      bgid=$!
+      ##end ticking
+
+      eval rsync -qaP --remove-source-files ~"$i/root/metanastevo_restore_$i.tar" /root/
+
+      kill "$bgid"; echo
+
+      echo -e "\e[1m\e[44m metanastevo_restore_`echo $VDSUSER`.tar file backed up to /root/metanastevo_restore_`echo $VDSUSER`.tar \e[0m";sleep 1;
+      echo
     fi
-    eval rm -f ~"$i/root/met_pkg.sh"
+    #    eval rm -rf ~"$i/root/migration_scripts"
+    #    eval rm -f ~"$i/root/met_pkg.sh"
     echo
     echo -e "\e[93m -------------------------------------------------------------------------------- \e[0m"
     echo -e "\e[93m ###################### \e[91m\e[1mAccount "$i" Migrated \e[0m\e[93m############################ \e[0m"
@@ -163,7 +176,9 @@ else
   echo "WHAT IS THIS SERVER?!"
 fi
 
-rm -f /root/met_*
+echo -e "\e[1m\e[41m Exiting. Done. \e[0m";echo
+
+#rm -f /root/met_*
 
 echo -e "\e[93m -------------------------------------------------------------------------------- \e[0m"
 echo -e "\e[93m ############################## \e[91m\e[1mMigration Complete!\e[0m\e[93m ################################## \e[0m"

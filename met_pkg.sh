@@ -6,7 +6,7 @@
 ## @Email:  admins@jumpline.som
 ## @Filename: met_pkg.sh
 ## @Last modified by:   schaffins
-## @Last modified time: 2021-02-08T21:31:04-05:00
+## @Last modified time: 2021-02-08T23:57:37-05:00
 #############################################
 
 
@@ -222,14 +222,5 @@ echo -e "\e[33m\e[1m Archiving of all data now complete..."; echo
 # -----------------------------------------------------------------------------
 echo -e "\e[33m\e[1m Cleaning Up data and packaging files... \e[0m";echo
 rm -rf "$WDIR"
-
-# -----------------------------------------------------------------------------
-# Signaling the script has completed.
-# -----------------------------------------------------------------------------
-echo -e "\e[1m\e[44m metanastevo_restore_`echo $VDSUSER`.tar file backed up to ~$i/root/metanastevo_restore_`echo $VDSUSER`.tar \e[0m";sleep 1;
-echo
-
-echo -e "\e[1m\e[41m Exiting. Done. \e[0m";echo
-sleep 1;
 
 exit 0
