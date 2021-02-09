@@ -6,7 +6,7 @@
 ## @Email:  admins@jumpline.som
 ## @Filename: metanastevo.sh
 ## @Last modified by:   schaffins
-## @Last modified time: 2021-02-09T00:12:36-05:00
+## @Last modified time: 2021-02-09T00:32:13-05:00
 #############################################
 
 # -----------------------------------------------------------------------------
@@ -125,7 +125,7 @@ if [[ ! -f /usr/local/cpanel/cpanel ]] ; then
       if [[ $? -eq 0 ]]; then
         echo
         echo -e "\e[33m\e[1m Rsyncing $i to vmcp14 was success! \e[0m";
-      elif [[ $? -ne 0] ]]; then
+      elif [[ $? -ne 0 ]]; then
         #statements
         echo -e "\e[1m\e[41m Rsync Failure!! \e[0m";echo
       fi
