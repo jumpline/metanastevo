@@ -6,7 +6,7 @@
 ## @Email:  admins@jumpline.som
 ## @Filename: metanastevo.sh
 ## @Last modified by:   schaffins
-## @Last modified time: 2021-02-08T23:04:19-05:00
+## @Last modified time: 2021-02-08T23:13:40-05:00
 #############################################
 
 # -----------------------------------------------------------------------------
@@ -129,7 +129,10 @@ if [[ ! -f /usr/local/cpanel/cpanel ]] ; then
         echo -e "\e[1m\e[41m Rsync Failure!! \e[0m";echo
       fi
     fi
-    eval rm -rf ~"$i/root/migration_scripts"
+
+    if [[ "$migquest" -eq "yes" ]];then
+      eval rm -rf ~"$i/root/migration_scripts"
+    fi
     eval rm -f ~"$i/root/met_pkg.sh"
     echo
     echo -e "\e[93m -------------------------------------------------------------------------------- \e[0m"
