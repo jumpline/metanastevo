@@ -5,8 +5,8 @@
 ## @Date:   2021-02-08T18:50:53-05:00
 ## @Email:  admins@jumpline.som
 ## @Filename: metanastevo.sh
-## @Last modified by:
-## @Last modified time: 2021-02-16T21:17:59-05:00
+## @Last modified by:   schaffins
+## @Last modified time: 2021-02-17T00:14:17-05:00
 #############################################
 
 # -----------------------------------------------------------------------------
@@ -117,7 +117,7 @@ if [[ ! -f /usr/local/cpanel/cpanel ]] ; then
       bgid=$!
       ##end ticking
 
-      eval scp -P 1022 -i "$fullkeythost" ~"$i/root/metanastevo_restore_$i.tar" root@"$fulldesthost":/root/
+      eval scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -P 1022 -i "$fullkeythost" ~"$i/root/metanastevo_restore_$i.tar" root@"$fulldesthost":/root/
 #      eval scp -P 1022 ~"$i/root/metanastevo_restore_$i.tar" "$fulldesthost":/root/
 
       kill "$bgid"; echo
