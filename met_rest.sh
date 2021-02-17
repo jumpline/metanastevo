@@ -5,8 +5,8 @@
 ## @Date:   2021-02-08T18:59:21-05:00
 ## @Email:  admins@jumpline.som
 ## @Filename: met_rest.sh
-## @Last modified by:
-## @Last modified time: 2021-02-16T21:15:15-05:00
+## @Last modified by:   schaffins
+## @Last modified time: 2021-02-16T23:47:57-05:00
 #############################################
 
 # -----------------------------------------------------------------------------
@@ -62,12 +62,13 @@ fi
 echo
 echo -e "\e[33m\e[1m Checking for Date::Parse. Installation can take some time. \e[0m";
 
-if [ ! -z perldoc -l Date::Parse | grep -q "Date/Parse.pm" ];
+chkdp=$(perldoc -l Date::Parse | grep "Date/Parse.pm")
+if [ -z "$chkdp" ];
 then
+  cpan -i Date::Parse
+else
   echo
   echo -e "\e[1m\e[32m Date::Parse is already installed! \e[0m" ;
-else
-  cpan -i Date::Parse
 fi
 
 # -----------------------------------------------------------------------------
@@ -366,6 +367,76 @@ do
 
 
 done < "$WORKDIR"/text_files/"$vdsUSER"_databases;
+
+# -----------------------------------------------------------------------------
+# Fixing Permissions. Poached and adjusted from another github script by @PeachFlame
+# -----------------------------------------------------------------------------
+
+# Main workhorse, fix perms per account passed to it. Poached and adjusted from another github script.
+#Get account from what is passed to the function
+fixprm="$cpUSER"
+
+
+#Make sure account isn't blank
+if [ -z $fixprm ]
+then
+
+  echo -e "\e[1m\e[41m Account Name Ended Up Blank Somehow. Submit a bug report \e[0m" ; echo
+  #Else, start doing work
+else
+
+  #Get the account's homedir
+  HOMEDIR=$(egrep "^${fixprm}:" /etc/passwd | cut -d: -f6)
+
+  echo -e "\e[93m -------------------------------------------------------------------------------- \e[0m"
+  echo -e "\e[93m ###################### \e[91m\e[1m Fixing Permissions For "$i" \e[0m\e[93m############################ \e[0m"
+  echo -e "\e[93m -------------------------------------------------------------------------------- \e[0m"
+  echo -e "\e[93m ###################### \e[91m\e[1m Fixing Website Files For "$i" \e[0m\e[93m############################ \e[0m"
+  echo -e "\e[93m -------------------------------------------------------------------------------- \e[0m"
+
+  #Fix individual files in public_html
+  find $HOMEDIR/public_html -type d -exec chmod 755 {} \;
+  find $HOMEDIR/public_html -type f | xargs -d$'\n' -r chmod 644
+  find $HOMEDIR/public_html -name '*.cgi' -o -name '*.pl' | xargs -r chmod 755
+  # Hidden files support: https://serverfault.com/a/156481
+  # fix hidden files and folders like .well-known/ with root or other user perms
+  chown -R $fixprm:$fixprm $HOMEDIR/public_html/.[^.]*
+  find $HOMEDIR/* -name .htaccess -exec chown $fixprm.$fixprm {} \;
+
+  tput bold
+  tput setaf 4
+  echo "Fixing public_html...."
+  tput sgr0
+  echo -e "\e[93m ###################### \e[91m\e[1m Fixing "$i"/public_html \e[0m\e[93m############################ \e[0m"
+  echo -e "\e[93m -------------------------------------------------------------------------------- \e[0m"
+  #Fix perms of public_html itself
+  chown $fixprm:nobody $HOMEDIR/public_html
+  chmod 750 $HOMEDIR/public_html
+
+
+  #Fix subdomains that lie outside of public_html
+  Fixing any domains with a document root outside of public_html
+
+  for SUBDOMAIN in $(grep -i documentroot /var/cpanel/userdata/$fixprm/* | grep -v '.cache\|_SSL' | awk '{print $2}' | grep -v public_html)
+  do
+    tput bold
+    tput setaf 4
+    echo "Fixing sub/addon domain document root $SUBDOMAIN...."
+    tput sgr0
+    find $SUBDOMAIN -type d -exec chmod 755 {} \;
+    find $SUBDOMAIN -type f | xargs -d$'\n' -r chmod 644
+    find $SUBDOMAIN -name '*.cgi' -o -name '*.pl' | xargs -r chmod 755
+    chown -R $fixprm:$fixprm $SUBDOMAIN
+    chmod 755 $SUBDOMAIN
+    find $SUBDOMAIN -name .htaccess -exec chown $fixprm.$fixprm {} \;
+  done
+
+  #Finished
+  echo -e "\e[93m ###################### \e[91m\e[1m Done Fixing Perms \e[0m\e[93m############################ \e[0m"
+  echo -e "\e[93m -------------------------------------------------------------------------------- \e[0m"
+  printf "\n\n"
+
+fi
 
 # -----------------------------------------------------------------------------
 # Remove the extracted contents.
