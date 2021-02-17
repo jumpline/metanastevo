@@ -5,8 +5,8 @@
 ## @Date:   2021-02-08T18:59:21-05:00
 ## @Email:  admins@jumpline.som
 ## @Filename: met_rest.sh
-## @Last modified by:   schaffins
-## @Last modified time: 2021-02-08T21:29:50-05:00
+## @Last modified by:
+## @Last modified time: 2021-02-16T21:15:15-05:00
 #############################################
 
 # -----------------------------------------------------------------------------
@@ -62,7 +62,7 @@ fi
 echo
 echo -e "\e[33m\e[1m Checking for Date::Parse. Installation can take some time. \e[0m";
 
-if (perldoc -l Date::Parse | grep -q "Date/Parse.pm")
+if [ ! -z perldoc -l Date::Parse | grep -q "Date/Parse.pm" ];
 then
   echo
   echo -e "\e[1m\e[32m Date::Parse is already installed! \e[0m" ;

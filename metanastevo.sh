@@ -5,8 +5,8 @@
 ## @Date:   2021-02-08T18:50:53-05:00
 ## @Email:  admins@jumpline.som
 ## @Filename: metanastevo.sh
-## @Last modified by:   schaffins
-## @Last modified time: 2021-02-09T00:32:13-05:00
+## @Last modified by:
+## @Last modified time: 2021-02-16T21:17:59-05:00
 #############################################
 
 # -----------------------------------------------------------------------------
@@ -160,7 +160,7 @@ elif [[ -f /usr/local/cpanel/cpanel ]]; then
     cpname=$(echo $i | cut -c -8)
     echo "$cpname" "$rand0pass" >> /var/log/mig_user_pass
     echo -e "\e[33m\e[1m Restoring account $i \e[0m";sleep 1; echo
-    eval cd /root/
+    #eval cd /root/metanastevo
     eval $(dirname "$0")/met_rest.sh "$i" "$cpname" "$rand0pass"
     sleep 5;
     echo;
