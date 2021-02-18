@@ -6,7 +6,7 @@
 ## @Email:  admins@jumpline.som
 ## @Filename: met_pkg.sh
 ## @Last modified by:   schaffins
-## @Last modified time: 2021-02-08T23:57:37-05:00
+## @Last modified time: 2021-02-17T22:39:58-05:00
 #############################################
 
 
@@ -114,7 +114,7 @@ done &
 bgid=$!
 ##end ticking
 
-TMPemptychk=`cat "$WDIR"/text_files/"$VDSUSER"_addon_subdomains`
+  TMPemptychk=`cat "$WDIR"/text_files/"$VDSUSER"_addon_subdomains`
 
 while read line
 do
@@ -122,10 +122,10 @@ do
   s=`echo "$line" | awk '{print $2}'`
   mkdir -p /root/"$TODAY"_"$VDSUSER"/domain_files/$d/
   #cp -R "$s"/. /root/"$TODAY"_"$VDSUSER"/domain_files/$d/
-  if [ "$TMPemptychk" -ge 1 ]; then
+  if [ ! -z "$TMPemptychk" ]; then
     rsync -vaP "$s"/. /root/"$TODAY"_"$VDSUSER"/domain_files/$d/
   else
-    echo;echo "nothing to rsync"
+    echo;echo "no addon domain files to rsync"
   fi
 done < "$WDIR"/text_files/"$VDSUSER"_addon_subdomains;
 
@@ -147,10 +147,10 @@ do
   dcop=`echo "$sdcopy" | awk '{print $1}'`
   scop=`echo "$sdcopy" | awk '{print $2}'`
   mkdir -p /root/"$TODAY"_"$VDSUSER"/domain_files/$dcop/
-  if [ "$TMPemptychk2" -ge 1 ]; then
+  if [ ! -z "$TMPemptychk2"]; then
     rsync -vaP "$scop"/. /root/"$TODAY"_"$VDSUSER"/domain_files/$dcop/
   else
-    echo;echo "nothing to rsync"
+    echo;echo "no subdomain files to rsync"
   fi
   #cp -R "$scop"/. /root/"$TODAY"_"$VDSUSER"/domain_files/$dcop/
 done < "$WDIR"/text_files/"$VDSUSER"_subdomain_list;
