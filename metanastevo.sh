@@ -6,7 +6,7 @@
 ## @Email:  admins@jumpline.som
 ## @Filename: metanastevo.sh
 ## @Last modified by:   schaffins
-## @Last modified time: 2021-02-17T00:14:17-05:00
+## @Last modified time: 2021-02-17T21:55:04-05:00
 #############################################
 
 # -----------------------------------------------------------------------------
@@ -145,8 +145,7 @@ if [[ ! -f /usr/local/cpanel/cpanel ]] ; then
       echo -e "\e[1m\e[44m metanastevo_restore_`echo $VDSUSER`.tar file backed up to /root/metanastevo_restore_`echo $VDSUSER`.tar \e[0m";sleep 1;
       echo
     fi
-    #    eval rm -rf ~"$i/root/migration_scripts"
-    #    eval rm -f ~"$i/root/met_pkg.sh"
+
     echo
     echo -e "\e[93m -------------------------------------------------------------------------------- \e[0m"
     echo -e "\e[93m ###################### \e[91m\e[1mAccount "$i" Migrated \e[0m\e[93m############################ \e[0m"
@@ -157,7 +156,7 @@ elif [[ -f /usr/local/cpanel/cpanel ]]; then
   for i in "${masteruserlist[@]}"
   do
     rand0pass=$(/bin/date +%N%s | openssl enc -base64 |cut -c -12)
-    cpname=$(echo $i | cut -c -8)
+    cpname=$(echo $i | cut -c -8 | sed -E 's/[^[:alnum:]]+//g')
     echo "$cpname" "$rand0pass" >> /var/log/mig_user_pass
     echo -e "\e[33m\e[1m Restoring account $i \e[0m";sleep 1; echo
     #eval cd /root/metanastevo

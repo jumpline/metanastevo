@@ -6,7 +6,7 @@
 ## @Email:  admins@jumpline.som
 ## @Filename: met_rest.sh
 ## @Last modified by:   schaffins
-## @Last modified time: 2021-02-16T23:47:57-05:00
+## @Last modified time: 2021-02-17T21:55:01-05:00
 #############################################
 
 # -----------------------------------------------------------------------------
@@ -389,9 +389,9 @@ else
   HOMEDIR=$(egrep "^${fixprm}:" /etc/passwd | cut -d: -f6)
 
   echo -e "\e[93m -------------------------------------------------------------------------------- \e[0m"
-  echo -e "\e[93m ###################### \e[91m\e[1m Fixing Permissions For "$i" \e[0m\e[93m############################ \e[0m"
+  echo -e "\e[93m ###################### \e[91m\e[1m Fixing Permissions For "$fixprm" \e[0m\e[93m############################ \e[0m"
   echo -e "\e[93m -------------------------------------------------------------------------------- \e[0m"
-  echo -e "\e[93m ###################### \e[91m\e[1m Fixing Website Files For "$i" \e[0m\e[93m############################ \e[0m"
+  echo -e "\e[93m ###################### \e[91m\e[1m Fixing Website Files For "$fixprm" \e[0m\e[93m############################ \e[0m"
   echo -e "\e[93m -------------------------------------------------------------------------------- \e[0m"
 
   #Fix individual files in public_html
@@ -402,12 +402,7 @@ else
   # fix hidden files and folders like .well-known/ with root or other user perms
   chown -R $fixprm:$fixprm $HOMEDIR/public_html/.[^.]*
   find $HOMEDIR/* -name .htaccess -exec chown $fixprm.$fixprm {} \;
-
-  tput bold
-  tput setaf 4
-  echo "Fixing public_html...."
-  tput sgr0
-  echo -e "\e[93m ###################### \e[91m\e[1m Fixing "$i"/public_html \e[0m\e[93m############################ \e[0m"
+  echo -e "\e[93m ###################### \e[91m\e[1m Fixing /home/"$fixprm"/public_html \e[0m\e[93m############################ \e[0m"
   echo -e "\e[93m -------------------------------------------------------------------------------- \e[0m"
   #Fix perms of public_html itself
   chown $fixprm:nobody $HOMEDIR/public_html
@@ -419,10 +414,8 @@ else
 
   for SUBDOMAIN in $(grep -i documentroot /var/cpanel/userdata/$fixprm/* | grep -v '.cache\|_SSL' | awk '{print $2}' | grep -v public_html)
   do
-    tput bold
-    tput setaf 4
-    echo "Fixing sub/addon domain document root $SUBDOMAIN...."
-    tput sgr0
+    echo -e "\e[93m ###################### \e[91m\e[1m Fixing Addon/Sub/Parked domain permissions for "$fixprm" \e[0m\e[93m############################ \e[0m"
+    echo -e "\e[93m -------------------------------------------------------------------------------- \e[0m"
     find $SUBDOMAIN -type d -exec chmod 755 {} \;
     find $SUBDOMAIN -type f | xargs -d$'\n' -r chmod 644
     find $SUBDOMAIN -name '*.cgi' -o -name '*.pl' | xargs -r chmod 755
