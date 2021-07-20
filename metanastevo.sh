@@ -6,7 +6,7 @@
 ## @Email:  admins@jumpline.som
 ## @Filename: metanastevo.sh
 ## @Last modified by:   schaffins
-## @Last modified time: 2021-02-17T21:55:04-05:00
+## @Last modified time: 2021-07-19T21:41:01-04:00
 #############################################
 
 # -----------------------------------------------------------------------------
@@ -108,7 +108,7 @@ if [[ ! -f /usr/local/cpanel/cpanel ]] ; then
     echo -e "\e[33m\e[1m Running met_pkg.sh inside of $i VDS... \e[0m";sleep 1;
     su - $i -c 'cd /root/migration_scripts/; /bin/bash met_pkg.sh'
     if [ "$shouldrsync" -eq "10" ]; then
-      echo -e "\e[33m\e[1m Rsyncing $i to vmcp14... \e[0m";sleep 1;
+      echo -e "\e[33m\e[1m Rsyncing $i to $fulldesthost... \e[0m";sleep 1;
 
       ##ticking
       while :; do
@@ -124,7 +124,7 @@ if [[ ! -f /usr/local/cpanel/cpanel ]] ; then
 
       if [[ $? -eq 0 ]]; then
         echo
-        echo -e "\e[33m\e[1m Rsyncing $i to vmcp14 was success! \e[0m";
+        echo -e "\e[33m\e[1m Rsyncing $i to $fulldesthost was success! \e[0m";
       elif [[ $? -ne 0 ]]; then
         #statements
         echo -e "\e[1m\e[41m Rsync Failure!! \e[0m";echo
