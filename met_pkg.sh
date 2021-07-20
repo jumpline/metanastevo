@@ -6,7 +6,7 @@
 ## @Email:  admins@jumpline.som
 ## @Filename: met_pkg.sh
 ## @Last modified by:   schaffins
-## @Last modified time: 2021-07-20T00:13:26-04:00
+## @Last modified time: 2021-07-20T00:16:56-04:00
 #############################################
 
 
@@ -213,10 +213,6 @@ bgid=$!
 ##end ticking
 
 echo -e "\e[33m\e[1m Archiving and compressing everything thats been done...\e[0m \e[1m\e[41m BE PATIENT! \e[0m "; sleep 1
-while :; do
-  for s in / - \\ \|; do echo -ne "\r $s";sleep 1;done
-done &
-bgid=$!
 
 tar -C "$WDIR" -cf /root/metanastevo_restore_"$VDSUSER".tar . |grep -v "Removing leading"
 
