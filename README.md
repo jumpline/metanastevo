@@ -51,10 +51,28 @@ This metanastevo.sh script can be ran on the VDS Master for packaging the accoun
 
 ## Usage
 
-Check the WIKI for Metanastevo or VDS2CP
+This is very basic. 1 script does all the work.
+
+
+1. Login to the VDS Master server (not as a client), download this file:
+```
+    wget --no-check-certificate https://raw.githubusercontent.com/jumpline.com/metanastevo/master/metanastevo.sh; chmod 755 metanastevo.sh
+```
+2. To Package the account run the following command. It will take 1 or more usernames:
+```
+    ./metanastevo.sh user1 user2 user3
+```
+3. Rsync or scp the /root/metanastevo_restore_USERNAME.tar file, to the cPanel destination server.
+
+4. Login to the cPanel server, and repeat steps 1 and 2.
+```
+    wget --no-check-certificate https://raw.githubusercontent.com/jumpline/metanastevo/master/metanastevo.sh; chmod 755 metanastevo.sh
+    ./metanastevo.sh user1 user2 user3
+```
 
 Logs for everything this script has done is at /var/log/metanastevo.log
 <br /><br /><br />
+
 
 
 ***
