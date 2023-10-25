@@ -4,7 +4,7 @@
 ## @Author: Jumpline <schaffins>
 ## @Date:   2021-02-08T18:59:21-05:00
 ## @Email:  admins@jumpline.som
-## @Filename: met_rest.sh
+## @Filename: sd2cp_rest.sh
 ## @Last modified by:   schaffins
 ## @Last modified time: 2021-02-17T21:55:01-05:00
 #############################################
@@ -17,7 +17,7 @@ cpUSER=$2
 pWORD=$3
 WORKDIR=/root/"$vdsUSER"_restore
 PWSTRNG=$(whmapi1 get_password_strength password="$3" |grep "strength:"| awk '{gsub(" strength: ", "");print}')
-#exec > >(tee -i /var/log/metanastevo_logs/main.log)
+#exec > >(tee -i /var/log/sd2cp_logs/main.log)
 #exec 2>&1
 
 
@@ -81,17 +81,17 @@ echo
 # Extract the tar to the directory we just made.
 # -----------------------------------------------------------------------------
 
-if [ ! -f /root/metanastevo_restore_"$vdsUSER".tar ]; then
-  echo -e "\e[1m\e[41m Restore file metanastevo_restore_$vdsUSER.tar file is not located at /root/metanastevo_restore_$vdsUSER.tar!!! \e[0m";sleep 1;echo
+if [ ! -f /root/sd2cp_restore_"$vdsUSER".tar ]; then
+  echo -e "\e[1m\e[41m Restore file sd2cp_restore_$vdsUSER.tar file is not located at /root/sd2cp_restore_$vdsUSER.tar!!! \e[0m";sleep 1;echo
   echo $(dye)
 else
-  echo -e "\e[33m\e[1m Extracting metanastevo_restore_$cpUSER.tar now... \e[0m \e[0m \e[30;48;5;226m This can SERIOUSLY take a long time. \e[0m"
+  echo -e "\e[33m\e[1m Extracting sd2cp_restore_$cpUSER.tar now... \e[0m \e[0m \e[30;48;5;226m This can SERIOUSLY take a long time. \e[0m"
   while :; do
     for s in / - \\ \|; do echo -ne "\r $s";sleep 1;done
     sleep 5
   done &
   bgid=$!
-  tar -xf /root/metanastevo_restore_"$vdsUSER".tar -C /root/"$vdsUSER"_restore/
+  tar -xf /root/sd2cp_restore_"$vdsUSER".tar -C /root/"$vdsUSER"_restore/
   kill "$bgid"; echo
 fi
 

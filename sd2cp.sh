@@ -4,7 +4,7 @@
 ## @Author: Jumpline <schaffins>
 ## @Date:   2021-02-08T18:50:53-05:00
 ## @Email:  admins@jumpline.som
-## @Filename: metanastevo.sh
+## @Filename: sd2cp.sh
 ## @Last modified by:   schaffins
 ## @Last modified time: 2021-07-19T21:41:01-04:00
 #############################################
@@ -12,7 +12,7 @@
 # -----------------------------------------------------------------------------
 # Setting basic variables and functions to get started. This includes a list
 # of users that will be used. A single user name can be used. This is ran with
-# something like /metanastevo.sh USERNAME USERNAME2.
+# something like /sd2cp.sh USERNAME USERNAME2.
 # -----------------------------------------------------------------------------
 
 IFS=$'\n'
@@ -34,10 +34,10 @@ function dye()
 
 # Creating directories
 mkdir -p /root/
-mkdir -p /var/log/metanastevo_logs/
+mkdir -p /var/log/sd2cp_logs/
 
 # Logging
-exec 2> /var/log/metanastevo_logs/stderr.log 1> >(tee -i /var/log/metanastevo_logs/stdout.log)
+exec 2> /var/log/sd2cp_logs/stderr.log 1> >(tee -i /var/log/sd2cp_logs/stdout.log)
 
 # -----------------------------------------------------------------------------
 # Checking which server type is running, cPanel or VDS. Once determined this
@@ -46,7 +46,7 @@ exec 2> /var/log/metanastevo_logs/stderr.log 1> >(tee -i /var/log/metanastevo_lo
 # server once packaged.
 # -----------------------------------------------------------------------------
 if [[ ! -f /usr/local/cpanel/cpanel ]]; then
-  chmod 755 $(dirname "$0")/met_pkg.sh
+  chmod 755 $(dirname "$0")/sd2cp_pkg.sh
   while :; do
     echo
     echo -e "\e[93m -------------------------------------------------------------------------------- \e[0m"
@@ -75,7 +75,7 @@ if [[ ! -f /usr/local/cpanel/cpanel ]]; then
     fi
   done
 elif [[ -f /usr/local/cpanel/cpanel ]]; then
-  chmod 755 $(dirname "$0")/met_rest.sh
+  chmod 755 $(dirname "$0")/sd2cp_rest.sh
 else
   echo "Cant Decide if this is a Package or Restore. STOP!"
   echo $(dye)
@@ -102,11 +102,11 @@ if [[ ! -f /usr/local/cpanel/cpanel ]] ; then
     eval mkdir -p ~"$i/root/migration_scripts"
     eval chown "$i\:" ~"$i/root/"
     echo -e "\e[33m\e[1m Copying script to $i root directory... \e[0m";sleep 1; echo
-    eval cp -av $(dirname "$0")/met_pkg.sh ~"$i/root/migration_scripts/"
+    eval cp -av $(dirname "$0")/sd2cp_pkg.sh ~"$i/root/migration_scripts/"
     echo -e "\e[33m\e[1m Chowning root directory to $i ownership... \e[0m";sleep 1; echo
     eval chown $i: -R ~"$i/root/migration_scripts/"
-    echo -e "\e[33m\e[1m Running met_pkg.sh inside of $i VDS... \e[0m";sleep 1;
-    su - $i -c 'cd /root/migration_scripts/; /bin/bash met_pkg.sh'
+    echo -e "\e[33m\e[1m Running sd2cp_pkg.sh inside of $i VDS... \e[0m";sleep 1;
+    su - $i -c 'cd /root/migration_scripts/; /bin/bash sd2cp_pkg.sh'
     if [ "$shouldrsync" -eq "10" ]; then
       echo -e "\e[33m\e[1m Rsyncing $i to $fulldesthost... \e[0m";sleep 1;
 
@@ -117,8 +117,8 @@ if [[ ! -f /usr/local/cpanel/cpanel ]] ; then
       bgid=$!
       ##end ticking
 
-      eval scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -P 1022 -i "$fullkeythost" ~"$i/root/metanastevo_restore_$i.tar" root@"$fulldesthost":/root/
-#      eval scp -P 1022 ~"$i/root/metanastevo_restore_$i.tar" "$fulldesthost":/root/
+      eval scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -P 1022 -i "$fullkeythost" ~"$i/root/sd2cp_restore_$i.tar" root@"$fulldesthost":/root/
+#      eval scp -P 1022 ~"$i/root/sd2cp_restore_$i.tar" "$fulldesthost":/root/
 
       kill "$bgid"; echo
 
@@ -138,11 +138,11 @@ if [[ ! -f /usr/local/cpanel/cpanel ]] ; then
       bgid=$!
       ##end ticking
 
-      eval rsync -qaP --remove-source-files ~"$i/root/metanastevo_restore_$i.tar" /root/
+      eval rsync -qaP --remove-source-files ~"$i/root/sd2cp_restore_$i.tar" /root/
 
       kill "$bgid"; echo
 
-      echo -e "\e[1m\e[44m metanastevo_restore_`echo $VDSUSER`.tar file backed up to /root/metanastevo_restore_`echo $VDSUSER`.tar \e[0m";sleep 1;
+      echo -e "\e[1m\e[44m sd2cp_restore_`echo $VDSUSER`.tar file backed up to /root/sd2cp_restore_`echo $VDSUSER`.tar \e[0m";sleep 1;
       echo
     fi
 
@@ -159,8 +159,8 @@ elif [[ -f /usr/local/cpanel/cpanel ]]; then
     cpname=$(echo $i | cut -c -8 | sed -E 's/[^[:alnum:]]+//g')
     echo "$cpname" "$rand0pass" >> /var/log/mig_user_pass
     echo -e "\e[33m\e[1m Restoring account $i \e[0m";sleep 1; echo
-    #eval cd /root/metanastevo
-    eval $(dirname "$0")/met_rest.sh "$i" "$cpname" "$rand0pass"
+    #eval cd /root/sd2cp
+    eval $(dirname "$0")/sd2cp_rest.sh "$i" "$cpname" "$rand0pass"
     sleep 5;
     echo;
   done
@@ -170,7 +170,7 @@ elif [[ -f /usr/local/cpanel/cpanel ]]; then
   cat /var/log/mig_user_pass
   echo
   rm -f /var/log/mig_user_pass
-  rm -f /root/met_rest.sh
+  rm -f /root/sd2cp_rest.sh
 else
   echo "WHAT IS THIS SERVER?!"
 fi

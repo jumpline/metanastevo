@@ -4,7 +4,7 @@
 ## @Author: Jumpline <schaffins>
 ## @Date:   2021-02-08T18:58:20-05:00
 ## @Email:  admins@jumpline.som
-## @Filename: met_pkg.sh
+## @Filename: sd2cp_pkg.sh
 ## @Last modified by:   schaffins
 ## @Last modified time: 2021-07-20T00:16:56-04:00
 #############################################
@@ -214,7 +214,7 @@ bgid=$!
 
 echo -e "\e[33m\e[1m Archiving and compressing everything thats been done...\e[0m \e[1m\e[41m BE PATIENT! \e[0m "; sleep 1
 
-tar -C "$WDIR" -cf /root/metanastevo_restore_"$VDSUSER".tar . |grep -v "Removing leading"
+tar -C "$WDIR" -cf /root/sd2cp_restore_"$VDSUSER".tar . |grep -v "Removing leading"
 
 kill "$bgid";echo
 
