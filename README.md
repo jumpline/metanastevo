@@ -54,32 +54,44 @@ This sd2cp.sh script can be ran on the VDS Master for packaging the account. The
 This is very basic. 1 script does all the work.
 
 
-1. Login to the VDS Master server (not as a client), download this file and extract it:
+1. Login to the VDS server (not as a client, but as root), download this file and extract it:
 ```
     
-    scp -P1022 $YOUR_USER@ansible01.myhostcenter.com:/opt/Migration_Scripts/sd2cp-release.tar.gz /root/
-    cd /root
-    tar zxvf sd2cp-release.tar.gz
-    cd sd2cp-release/
-    chmod 755 *.sh
+scp -P1022 $YOUR_SSH_USE@ansible01.myhostcenter.com:/opt/Migration_Scripts/sd2cp-release.tar.gz /root/
+cd /root
+tar zxvf sd2cp-release.tar.gz
+cd sd2cp-release/
+chmod 755 *.sh
+
 ```
-2. To Package the account run the following command. It will take 1 or more usernames:
+2. To Package the account(s) run the following command. It will take 1 or more usernames:
 ```
     ./sd2cp.sh user1 user2 user3
 ```
 3. Rsync or scp the /root/sd2cp_restore_USERNAME.tar file, to the cPanel destination server.
 
-4. Login to the cPanel server, and repeat steps 1 and 2.
+4. Login to the cPanel server, and repeat steps 1, and 2. Then step repeate step 3, of running the script with the same usernames. It will search /root/ for the .tar file with the corresponding usernames, and restore them.
 ```
-    scp -P1022 $YOUR_USER@ansible01.myhostcenter.com:/opt/Migration_Scripts/sd2cp-release.tar.gz /root/
-    cd /root
-    tar zxvf sd2cp-release.tar.gz
-    cd sd2cp-release/
-    chmod 755 *.sh
-    ./sd2cp.sh user1 user2 user3
+    
+scp -P1022 $YOUR_SSH_USER@ansible01.myhostcenter.com:/opt/Migration_Scripts/sd2cp-release.tar.gz /root/
+cd /root
+tar zxvf sd2cp-release.tar.gz
+cd sd2cp-release/
+chmod 755 *.sh
+./sd2cp.sh user1 user2 user3
+
+```
+5. At the end of the script, you will see it output the main password used for everything on the account, you'll want to take note of these, lest you want to manually reset every password on the account. It'll be "username password" format
 ```
 
-Logs for everything this script has done is at /var/log/sd2cp.log
+COPY THESE PASSWORDS NOW!!! THEY EXIST NOWHERE ELSE. 
+IF YOU DONT SAVE THESE NOW, YOU WILL HAVE TO REGENERATE FOR ALL CUSTOMERS MIGRATED 
+These corresponding password is used with anything that has a password in cPanel. 
+
+USERNAME MkjK2mz0NjM4
+
+```
+Logs for everything this script has done are in /var/log/sd2cp_logs/
 <br /><br /><br />
 
 

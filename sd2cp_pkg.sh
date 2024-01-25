@@ -57,7 +57,35 @@ done &
 bgid=$!
 ##end ticking
 
+#cp -a /var/spool/mail "$WDIR"/mailboxes
+
+
+mkdir -p "$WDIR"
+cat /etc/mail/virtusertable |awk '{print $1}'|grep -vE '\#|MAILER-DAEMON|postmaster|^$|root\@|ftp\@'| sed '/^@/ d'|sed 's/www\.//' |uniq|sed 's/@.*//'|awk '!seen[$0]++' > "$WDIR"/mailusers.txt
 cp -a /var/spool/mail "$WDIR"/mailboxes
+
+
+while read MBNAME
+do
+  ls -1 "$WDIR"/mailboxes/ |grep "$MBNAME"\.*\.gz > "$WDIR"/$MBNAME.box.txt
+  mv "$WDIR"/mailboxes/$MBNAME{,.original}
+
+  cat "$WDIR"/$MBNAME.box.txt
+  if [[ $? != 0 ]]
+    then
+      while read MBBOX
+      do
+        zcat "$WDIR"/mailboxes/"$MBBOX" >> "$WDIR"/mailboxes/"$MBNAME"
+
+      done < "$WDIR"/$MBNAME.box.txt
+  #else
+  # echo "File is empty. Nothing captured, or nothing to restore"
+  # exit 1
+  fi
+
+  cat "$WDIR"/mailboxes/$MBNAME.original >> "$WDIR"/mailboxes/"$MBNAME"
+
+done < "$WDIR"/mailusers.txt;
 
 kill "$bgid"; echo
 # -----------------------------------------------------------------------------

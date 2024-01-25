@@ -142,7 +142,7 @@ if [[ ! -f /usr/local/cpanel/cpanel ]] ; then
 
       kill "$bgid"; echo
 
-      echo -e "\e[1m\e[44m sd2cp_restore_$i.tar file backed up to /root/sd2cp_restore_$i.tar \e[0m";sleep 1;
+      echo -e "\e[1m\e[44m sd2cp_restore_`echo $i`.tar file backed up to /root/sd2cp_restore_`echo $i`.tar \e[0m";sleep 1;
       echo
     fi
 
